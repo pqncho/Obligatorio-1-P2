@@ -2,7 +2,7 @@
 package MedioTateti;
 
 import java.util.ArrayList;
-
+    
 /*
  * Clase Sistema
  * Maneja la lista de jugadores, el ranking y crea las partidas (instancias de Juego).
