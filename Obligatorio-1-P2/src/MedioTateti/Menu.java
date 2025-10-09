@@ -23,8 +23,7 @@ public class Menu {
         scanner.nextLine();
         while(opcion != 5){
             switch (opcion){
-                case 1: //registrar jugador
-                    
+                case 1: registrarJugador();
                     break;
                 case 2: //comienzo de partida comun
                     
@@ -64,16 +63,21 @@ public class Menu {
         System.out.println("Ingrese la edad del jugador");
         int edadJugador = scanner.nextInt();
         scanner.nextLine();
-       
-        for (int i=0; i < sistema.jugadores.size(); i++) {
-            while(sistema.jugadores.get(i).getNombre() == nombreJugador){
-                System.out.println("Nombre existente, reingrese");
-                nombreJugador = scanner.nextLine();
-            }
-            Jugador jugador = new Jugador(nombreJugador, edadJugador);
-            sistema.jugadores.add(jugador);
-        }
         
+       boolean nombreRepetido = true;
+       
+        while(nombreRepetido){
+            nombreRepetido = false;
+            for (int i=0; i < sistema.jugadores.size(); i++) {
+                if(sistema.jugadores.get(i).getNombre().equals(nombreJugador)){    
+                    System.out.println("Nombre existente, reingrese");
+                    nombreJugador = scanner.nextLine();
+                    nombreRepetido = true;
+                }
+            }   
+        }
+        Jugador nuevoJugador = new Jugador(nombreJugador, edadJugador);
+        sistema.jugadores.add(nuevoJugador);
     }
     
 }
