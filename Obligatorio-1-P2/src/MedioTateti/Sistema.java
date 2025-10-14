@@ -9,5 +9,25 @@ import java.util.ArrayList;
  * Es el intermediario entre la interfaz (TatetiMain) y la lógica del juego.
  */
 public class Sistema {
-    ArrayList<Jugador> jugadores= new ArrayList<>();
+    private ArrayList<Jugador> jugadores= new ArrayList<Jugador>();
+    
+    public ArrayList<Jugador> getJugadores(){
+        return jugadores;
+    }
+    public void setJugadores(ArrayList<Jugador> listaJugadores){
+        jugadores = listaJugadores;
+    }
+    
+    public void agregarJugador(Jugador unJugador){
+        this.getJugadores().add(unJugador);
+    }
+    public boolean existeJugador(String unNombre){
+        boolean existe = false;
+        for (int i = 0; i < this.getJugadores().size(); i++) {
+            if(this.getJugadores().get(i).getNombre().equals(unNombre)){
+                existe = true;
+            }
+        }
+        return existe;
+    }
 }

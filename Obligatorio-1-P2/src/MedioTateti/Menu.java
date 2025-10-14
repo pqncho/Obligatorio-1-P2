@@ -58,26 +58,36 @@ public class Menu {
     }
     
     public static void registrarJugador(){
-        System.out.println("Ingrese nombre del jugador");
-        String nombreJugador = scanner.nextLine();
-        System.out.println("Ingrese la edad del jugador");
-        int edadJugador = scanner.nextInt();
-        scanner.nextLine();
+        String nombreJugador = "";
+        int edadJugador = -1;
+        boolean valido = false;
         
-       boolean nombreRepetido = true;
-       
-        while(nombreRepetido){
-            nombreRepetido = false;
-            for (int i=0; i < sistema.jugadores.size(); i++) {
-                if(sistema.jugadores.get(i).getNombre().equals(nombreJugador)){    
-                    System.out.println("Nombre existente, reingrese");
-                    nombreJugador = scanner.nextLine();
-                    nombreRepetido = true;
+        while(!valido){
+            System.out.println("Ingrese el nombre del jugador:");
+            nombreJugador = scanner.nextLine();
+            if(nombreJugador.length() == 0){
+                System.out.println("Nombre vacio, Reingrese");
+            }else{
+                if(sistema.existeJugador(nombreJugador)){
+                    System.out.println("Nombre existente, Reingrese");
+                }else{
+                    valido = true;
                 }
-            }   
+            }
         }
+        
+        System.out.println("ingrese edad del jugador");
+        edadJugador = scanner.nextInt();
+        scanner.nextLine();
+        while(edadJugador <= 0){
+            System.out.println("edad invalida, Reingrese");
+            edadJugador = scanner.nextInt();
+            scanner.nextLine();
+        }
+        
         Jugador nuevoJugador = new Jugador(nombreJugador, edadJugador);
-        sistema.jugadores.add(nuevoJugador);
+        sistema.agregarJugador(nuevoJugador);
+        System.out.println("Jugador Registrado");
     }
     
 }
