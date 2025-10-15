@@ -90,4 +90,36 @@ public class Menu {
         System.out.println("Jugador Registrado");
     }
     
+    private static void jugarPartidaNormal(){
+        System.out.println("Jugador X(nombre): ");
+        String nombreX = scanner.nextLine();
+        System.out.println("Jugador O(nombre): ");
+        String nombreO = scanner.nextLine();
+        
+        if(!sistema.existeJugador(nombreX) || !sistema.existeJugador(nombreO)){
+            System.out.println("Alguno de los jugadores no existe.");
+        }else{
+            Jugador jugadorX = sistema.buscarJugador(nombreX);
+            Jugador jugadorO = sistema.buscarJugador(nombreO);
+            Partida partida = new Partida(jugadorX, jugadorO);
+            while(!partida.estaFinalizado()){
+                imprimirTablero(partida.getTablero());
+                System.out.println("Juega "+ partida.darFichaActual());
+                System.out.println("Ingrese la jugada");
+                // Jugada jugada = scanner.nextLine;
+            }
+        }
+    }
+    
+    private static void imprimirTablero(Tablero unTablero){
+        String[][] mat = unTablero.getCeldas();
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+    }
+    
 }
