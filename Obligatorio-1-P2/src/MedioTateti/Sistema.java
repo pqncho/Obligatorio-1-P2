@@ -30,4 +30,14 @@ public class Sistema {
         }
         return existe;
     }
+    public Jugador buscarJugador(String unNombre){
+        Jugador unJugador = null;
+        for (int i = 0; i < getJugadores().size(); i++) {
+            Jugador aux = getJugadores().get(i);
+            if(aux.getNombre().equals(unNombre)){
+                unJugador = aux;
+            }
+        }
+        return unJugador;
+    }
 }
