@@ -61,14 +61,26 @@ public class Tablero {
         }
         return lleno;
     }
-    
+    // hayLInea y tresIguales va a ser distinto, hay que cambiarlo cuando validemos las piezas X o O
     public boolean hayLinea(){
-        return true;
+        boolean hay = false;
+        
+        for (int i = 0; i < 3; i++) {
+            if(tresIguales(celdas[i][0], celdas[i][1], celdas[i][2])){
+                hay = true;
+            }
+        }
+        
+        for (int j = 0; j < 6; j++) {
+            
+            
+        }
+        
+        return hay;
     }
-    
-    private boolean tresIguales(char a, char b, char c){
+    private boolean tresIguales(String a, String b, String c){
         boolean iguales = false;
-        if(a != ' '){
+        if(a != " "){
             if(a == b){
                 if(b == c){
                     iguales = true;
