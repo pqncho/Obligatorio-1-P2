@@ -3,5 +3,5 @@ package MedioTateti;
 
 
 public class Pieza {
-    
+    private char color;
 }
