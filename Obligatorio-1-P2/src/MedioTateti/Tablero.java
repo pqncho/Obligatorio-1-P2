@@ -39,11 +39,11 @@ public class Tablero {
     }
     
     //despues de definir la ficha hay que ver si esto cambia
-    public boolean colocar(int fila, int columna, String ficha){
+    public boolean colocar(int fila, int columna, String pieza){
         boolean pude = false;
         if(enRango(fila, columna)){
             if(celdas[fila][columna] == " "){
-                celdas[fila][columna] = ficha;
+                celdas[fila][columna] = pieza;
                 pude = true;
             }
         }

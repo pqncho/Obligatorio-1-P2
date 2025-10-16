@@ -24,7 +24,7 @@ public class Partida {
     public boolean jugar(int fila, int columna){
         boolean pudeJugar = false;
         if(!finalizado){
-            String fichaActual = darJugadaActual();
+            String fichaActual = darPiezaActual();
             if(tablero.estaLibre(fila, columna)){
                 tablero.colocar(fila, columna, fichaActual);
                 actualizarEstado();
@@ -38,7 +38,7 @@ public class Partida {
     }
     
     // 'C' o 'D' segun el truno
-    public String darJugadaActual(){
+    public String darPiezaActual(){
         //hay que hacerlo despues de definir la clase jugada
         return "hola";
     }
