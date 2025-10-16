@@ -104,7 +104,7 @@ public class Menu {
             Partida partida = new Partida(jugadorX, jugadorO);
             while(!partida.estaFinalizado()){
                 imprimirTablero(partida.getTablero());
-                System.out.println("Juega "+ partida.darFichaActual());
+                System.out.println("Juega "+ partida.darJugadaActual());
                 System.out.println("Ingrese la jugada");
                 // Jugada jugada = scanner.nextLine;
             }
