@@ -21,9 +21,9 @@ public class Pieza {
     public void invertir(){
         if(orientacion == 'C' ){
             orientacion = 'D';
-         } else{
+        }else{
                 orientacion = 'C';
-                }
+        }
     }
     
    //hay que crear el metodo que muestra graficamente la pieza, que luego la vas a mostrar en el tablero
