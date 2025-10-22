@@ -24,9 +24,11 @@ public class Partida {
     public boolean jugar(int fila, int columna){
         boolean pudeJugar = false;
         if(!finalizado){
-            String fichaActual = darPiezaActual();
+            Pieza piezaActual = darPiezaActual();
+            char unColor = piezaActual.getColor();
+            char unaOrientacion = piezaActual.getOrientacion();
             if(tablero.estaLibre(fila, columna)){
-                tablero.colocar(fila, columna, fichaActual);
+                tablero.colocar(fila, columna, unColor, unaOrientacion);
                 actualizarEstado();
                 if(!finalizado){
                     turnoDeO = !turnoDeO;
@@ -38,9 +40,9 @@ public class Partida {
     }
     
     // 'C' o 'D' segun el truno
-    public String darPiezaActual(){
+    public Pieza darPiezaActual(){
         //hay que hacerlo despues de definir la clase jugada
-        return "hola";
+        return new Pieza('N', 'C');
     }
     
     public Tablero getTablero(){

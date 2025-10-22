@@ -106,20 +106,43 @@ public class Menu {
                 imprimirTablero(partida.getTablero());
                 System.out.println("Juega "+ partida.darPiezaActual());
                 System.out.println("Ingrese la jugada");
-                // Jugada jugada = scanner.nextLine;
+                // Jugada jugada = algo;
             }
         }
     }
     
     private static void imprimirTablero(Tablero unTablero){
-        String[][] mat = unTablero.getCeldas();
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
+        String[] NC = {" ●","● "," ●"};
+        String[] ND = {"● "," ●","● "};
+        String[] BC = {" ○","○ "," ○"};
+        String[] BD = {"○ "," ○","○ "};
+        
+        String[][] valorPiezas = unTablero.matrizPieza(unTablero);
+        for (int i = 0; i < valorPiezas.length; i++) {
+            System.out.println("+--+--+--+--+--+--+");
+            for(int k = 0; k < 3; k++){
+                String renglon = "|";
+                for (int j = 0; j < valorPiezas[0].length; j++) {                
+                    if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'C'){
+                        
+                    }else{
+                        if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'D'){
+                        
+                        }else{
+                            if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'C'){
+                        
+                            }else{
+                                if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'D'){
+                        
+                                }else{
+                                    renglon += "   |";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
 }

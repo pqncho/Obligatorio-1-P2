@@ -54,21 +54,6 @@ public class Pieza {
         return simbolo;
     }
     
-    public String[] arrayPieza(){
-        String[] resultado = new String[3];
-        String simbolo = simboloDeColor();
-        if(orientacion == 'C'){
-            resultado[0] = " " + simbolo;
-            resultado[1] = simbolo + " ";
-            resultado[2] = " " + simbolo;
-        }else{
-            resultado[0] = simbolo + " ";
-            resultado[1] = " " + simbolo;
-            resultado[2] = simbolo + " ";
-        }
-        return resultado;
-    }
-    
     
    //hay que crear el metodo que muestra graficamente la pieza, que luego la vas a mostrar en el tablero
 }

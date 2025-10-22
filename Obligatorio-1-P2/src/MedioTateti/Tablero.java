@@ -2,26 +2,25 @@
 package MedioTateti;
 
 public class Tablero {
-    private String[][] celdas;
+    private Pieza[][] celdas;
     
     public Tablero(){
-        celdas = new String[3][6];
+        celdas = new Pieza[3][6];
         inicializar();
     }
     
     public void inicializar(){
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
-                celdas[i][j] = " ";
+                celdas[i][j] = null;
             }
-            
         }
     }
     
     public boolean estaLibre(int fila, int columna){
         boolean libre = false;
         if(enRango(fila, columna)){
-            if(celdas[fila][columna]== " "){
+            if(celdas[fila][columna]== null){
                 libre = true;
             }
         }
@@ -39,11 +38,12 @@ public class Tablero {
     }
     
     //despues de definir la ficha hay que ver si esto cambia
-    public boolean colocar(int fila, int columna, String pieza){
+    //aca se podria recibir color y orientacion y adentro definir new Pieza
+    public boolean colocar(int fila, int columna, char unColor, char unaOrientacion){
         boolean pude = false;
         if(enRango(fila, columna)){
-            if(celdas[fila][columna] == " "){
-                celdas[fila][columna] = pieza;
+            if(celdas[fila][columna] == null){
+                celdas[fila][columna] = new Pieza(unColor, unaOrientacion);
                 pude = true;
             }
         }
@@ -54,7 +54,7 @@ public class Tablero {
         boolean lleno = true;
         for (int i = 0; i < 3; i++){
             for (int j = 0; j < 6; j++) {
-                if(celdas[i][j] == " "){
+                if(celdas[i][j] == null){
                     lleno = false;
                 }                
             }           
@@ -78,9 +78,9 @@ public class Tablero {
         
         return hay;
     }
-    private boolean tresIguales(String a, String b, String c){
+    private boolean tresIguales(Pieza a, Pieza b, Pieza c){
         boolean iguales = false;
-        if(a != " "){
+        if(a != null){
             if(a == b){
                 if(b == c){
                     iguales = true;
@@ -90,8 +90,19 @@ public class Tablero {
         return iguales;
     }
     
-    public String[][] getCeldas(){
+    public Pieza[][] getCeldas(){
         return celdas;
+    }
+    
+    public String[][] matrizPieza(Tablero unTablero){
+        String[][] valores = new String[3][6];
+        Pieza[][] celdas = unTablero.getCeldas();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 6; j++) {
+                valores[i][j] = celdas[i][j].getColor() + celdas[i][j].getOrientacion() + "";
+            }            
+        }
+        return valores;
     }
     
     
