@@ -37,13 +37,12 @@ public class Tablero {
         return enElRango;
     }
     
-    //despues de definir la ficha hay que ver si esto cambia
-    //aca se podria recibir color y orientacion y adentro definir new Pieza
-    public boolean colocar(int fila, int columna, char unColor, char unaOrientacion){
+    //aca el metodo puede recibir o la pieza o los chars
+    public boolean colocar(int fila, int columna, Pieza unaPieza){
         boolean pude = false;
         if(enRango(fila, columna)){
             if(celdas[fila][columna] == null){
-                celdas[fila][columna] = new Pieza(unColor, unaOrientacion);
+                celdas[fila][columna] = unaPieza;
                 pude = true;
             }
         }
@@ -99,11 +98,14 @@ public class Tablero {
         Pieza[][] celdas = unTablero.getCeldas();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
-                valores[i][j] = celdas[i][j].getColor() + celdas[i][j].getOrientacion() + "";
+                if(celdas[i][j] == null){
+                    valores[i][j] = " ";
+                }else{
+                    valores[i][j] = celdas[i][j].getColor() + celdas[i][j].getOrientacion() + "";
+                }
             }            
         }
         return valores;
     }
-    
     
 }

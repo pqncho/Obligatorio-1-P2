@@ -40,8 +40,6 @@ public class Menu {
             opcion = scanner.nextInt();
             scanner.nextLine();
         }
-        
-        
     }
     
     public static void mostrarMenu(){
@@ -91,22 +89,39 @@ public class Menu {
     }
     
     private static void jugarPartidaNormal(){
-        System.out.println("Jugador X(nombre): ");
-        String nombreX = scanner.nextLine();
-        System.out.println("Jugador O(nombre): ");
-        String nombreO = scanner.nextLine();
-        
-        if(!sistema.existeJugador(nombreX) || !sistema.existeJugador(nombreO)){
-            System.out.println("Alguno de los jugadores no existe.");
+        if(sistema.getJugadores().size()<2){
+            System.out.println("Debe haber al menos 2 jugadores registrados");
         }else{
-            Jugador jugadorX = sistema.buscarJugador(nombreX);
-            Jugador jugadorO = sistema.buscarJugador(nombreO);
+            sistema.ordenarJugadoresPorNombre();
+            ArrayList<Jugador> lista = sistema.getJugadores();
+            mostrarJugadoresNumerados(lista);
+            
+            Jugador jugadorX = null;
+            Jugador jugadorO = null;
+            
+            jugadorX = elegirJugadorPorNumero(lista, "JUGADOR X");
+            boolean distinto = false;
+            while(!distinto){
+                jugadorO = elegirJugadorPorNumero(lista, "JUGADOR O");
+                if(jugadorO == jugadorX){
+                    System.out.println("Debe elegir jugadores diferentes. Reintente JUGADOR O");
+                }else{
+                    distinto = true;
+                }
+            }
+            
             Partida partida = new Partida(jugadorX, jugadorO);
+            Tablero tablero = new Tablero();
+            System.out.println("Comieza jugando: X = "+jugadorX.getNombre()+" vs O = "+jugadorO.getNombre());
+            imprimirTablero(tablero);
             while(!partida.estaFinalizado()){
-                imprimirTablero(partida.getTablero());
-                System.out.println("Juega "+ partida.darPiezaActual());
-                System.out.println("Ingrese la jugada");
-                // Jugada jugada = algo;
+                System.out.println("Juega "+jugadorX.getNombre());
+                System.out.println("Ingrese la jugada: ");
+                String jugada = scanner.nextLine();
+                //aca van cosistas
+                
+                
+                
             }
         }
     }
@@ -124,25 +139,111 @@ public class Menu {
                 String renglon = "|";
                 for (int j = 0; j < valorPiezas[0].length; j++) {                
                     if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'C'){
-                        
+                        renglon += NC[k];
                     }else{
                         if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'D'){
-                        
+                            renglon += ND[k];
                         }else{
                             if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'C'){
-                        
+                                renglon += BC[k];
                             }else{
                                 if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'D'){
-                        
+                                    renglon += BD[k];
                                 }else{
-                                    renglon += "   |";
+                                    renglon += "  |";
                                 }
                             }
                         }
                     }
                 }
+                System.out.println(renglon);
             }
         }
+        System.out.println("+--+--+--+--+--+--+");
+    }
+    
+    //debe haber otra forma de hacerlo
+    private static void imprimirTableroConBordes(Tablero unTablero){
+        String[] NC = {" ●","● "," ●"};
+        String[] ND = {"● "," ●","● "};
+        String[] BC = {" ○","○ "," ○"};
+        String[] BD = {"○ "," ○","○ "};
+        
+        String[][] valorPiezas = unTablero.matrizPieza(unTablero);
+        String[] letrasBordes = {"A","B","C"};
+        for (int i = 0; i < valorPiezas.length; i++) {
+            System.out.println("  1  2  3  4  5  6");
+            System.out.println("+--+--+--+--+--+--+");
+            for(int k = 0; k < 3; k++){
+                String renglon = "|";
+                if(k == 1){
+                    renglon = letrasBordes[i]+"|";
+                }
+                for (int j = 0; j < valorPiezas[0].length; j++) {                
+                    if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'C'){
+                        renglon += NC[k];
+                    }else{
+                        if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'D'){
+                            renglon += ND[k];
+                        }else{
+                            if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'C'){
+                                renglon += BC[k];
+                            }else{
+                                if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'D'){
+                                    renglon += BD[k];
+                                }else{
+                                    renglon += "  |";
+                                }
+                            }
+                        }
+                    }
+                }
+                System.out.println(renglon);
+            }
+        }
+        System.out.println("+--+--+--+--+--+--+");
+    }
+    
+    private static void mostrarJugadoresNumerados(ArrayList<Jugador> lista){
+        System.out.println("JUGADORES:");
+        for (int i = 0; i < lista.size(); i++) {
+            int numero = i+1;
+            System.out.println(numero + ") "+ lista.get(i).getNombre());
+        }
+    }
+    
+    private static int leerNumeroJugador(int minimo, int maximo){
+        int numeroElegido = -1;
+        boolean valido = false;
+        while(!valido){
+            System.out.println("Elija un jugador por el numero");
+            if(scanner.hasNextInt()){
+                numeroElegido = scanner.nextInt();
+                scanner.nextLine();
+                if(numeroElegido >= minimo){
+                    if(numeroElegido <= maximo){
+                        valido = true;
+                    }else{
+                        System.out.println("Fuera de rango. Reingresar");
+                    }
+                }else{
+                    System.out.println("Fuera de rango. Reingresar");
+                }
+            }else{
+                System.out.println("Se debe ingresar un número");
+                scanner.nextLine();
+            }
+        }
+        return numeroElegido;
+    }
+    
+    private static Jugador elegirJugadorPorNumero(ArrayList<Jugador> lista, String etiqueta){
+        Jugador elegido = null;
+        int maximo = lista.size();
+        System.out.println("Seleccion el "+etiqueta+" :");
+        int numero = leerNumeroJugador(1, maximo);
+        elegido = lista.get(numero -1);
+        return elegido;
     }
     
 }

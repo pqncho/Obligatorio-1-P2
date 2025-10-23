@@ -54,6 +54,4 @@ public class Pieza {
         return simbolo;
     }
     
-    
-   //hay que crear el metodo que muestra graficamente la pieza, que luego la vas a mostrar en el tablero
 }

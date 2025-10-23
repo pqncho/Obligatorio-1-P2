@@ -20,15 +20,13 @@ public class Partida {
         return finalizado;
     }
     
-    //esto cambia despues de definir jugada
+    //esto cambia despues de definir jugada, la cual no va a existir, pero veremos
     public boolean jugar(int fila, int columna){
         boolean pudeJugar = false;
         if(!finalizado){
             Pieza piezaActual = darPiezaActual();
-            char unColor = piezaActual.getColor();
-            char unaOrientacion = piezaActual.getOrientacion();
             if(tablero.estaLibre(fila, columna)){
-                tablero.colocar(fila, columna, unColor, unaOrientacion);
+                tablero.colocar(fila, columna, piezaActual);
                 actualizarEstado();
                 if(!finalizado){
                     turnoDeO = !turnoDeO;
@@ -39,9 +37,9 @@ public class Partida {
         return pudeJugar;
     }
     
-    // 'C' o 'D' segun el truno
+    // 'C' o 'D' segun el truno (y el color)
     public Pieza darPiezaActual(){
-        //hay que hacerlo despues de definir la clase jugada
+        //hay que hacerlo despues de definir la clase jugada, la cual no va a existir, pero veremos
         return new Pieza('N', 'C');
     }
     
