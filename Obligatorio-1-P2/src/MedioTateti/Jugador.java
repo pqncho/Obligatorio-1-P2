@@ -1,7 +1,7 @@
 /* Trabajo realizado por Marcos Coszion (332945) y Francisco Lino (347691)*/
 package MedioTateti;
 
-public class Jugador {
+public class Jugador implements Comparable<Jugador>{
     private String nombre;
     private int edad;
     
@@ -17,6 +17,15 @@ public class Jugador {
     }
     public void setEdad (int unaEdad){
         edad = unaEdad;
+    }
+    
+    @Override
+    public int compareTo(Jugador otroJugador){
+        int resultado = 0;
+        if(this.nombre != null && otroJugador != null){
+            resultado = this.nombre.compareTo(otroJugador.getNombre());
+        }
+        return resultado;
     }
     
     @Override

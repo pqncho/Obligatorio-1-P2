@@ -1,7 +1,7 @@
 /* Trabajo realizado por Marcos Coszion (332945) y Francisco Lino (347691)*/
 package MedioTateti;
 
-import java.util.ArrayList;
+import java.util.*;
     
 /*
  * Clase Sistema
@@ -29,5 +29,21 @@ public class Sistema {
             }
         }
         return existe;
+    }
+    
+    //capaz no es necesario este metodo
+    public Jugador buscarJugador(String unNombre){
+        Jugador unJugador = null;
+        for (int i = 0; i < getJugadores().size(); i++) {
+            Jugador aux = getJugadores().get(i);
+            if(aux.getNombre().equals(unNombre)){
+                unJugador = aux;
+            }
+        }
+        return unJugador;
+    }
+    
+    public void ordenarJugadoresPorNombre(){
+        Collections.sort(jugadores);
     }
 }
