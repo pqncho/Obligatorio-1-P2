@@ -36,8 +36,7 @@ public class Tablero {
         }
         return enElRango;
     }
-    
-    //aca el metodo puede recibir o la pieza o los chars
+   
     public boolean colocar(int fila, int columna, Pieza unaPieza){
         boolean pude = false;
         if(enRango(fila, columna)){
@@ -93,6 +92,7 @@ public class Tablero {
         return celdas;
     }
     
+    //esto creo que al final no(seguramente no)
     public String[][] matrizPieza(Tablero unTablero){
         String[][] valores = new String[3][6];
         Pieza[][] celdas = unTablero.getCeldas();
