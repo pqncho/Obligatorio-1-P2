@@ -57,15 +57,15 @@ public class Partida {
         boolean hayGanador = tablero.hayLinea();
         if(hayGanador){
             finalizado = true;
-        }
-        if(turnoDeO){
-            ganador = jugadorO;
-            jugadorO.sumarVictoria();
-            jugadorX.sumarDerrota();
-        }else{
-            ganador = jugadorX;
-            jugadorX.sumarVictoria();
-            jugadorO.sumarDerrota();
+            if(turnoDeO){
+                ganador = jugadorO;
+                jugadorO.sumarVictoria();
+                jugadorX.sumarDerrota();
+            }else{
+                ganador = jugadorX;
+                jugadorX.sumarVictoria();
+                jugadorO.sumarDerrota();
+            }
         }
     }
     

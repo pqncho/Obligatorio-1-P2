@@ -43,14 +43,14 @@ public class Menu {
                     registrarJugador();
                     mostrarMenu();
                     break;
-                case 2: //comienzo de partida comun
+                case 2:
                     jugarPartidaNormal();
                     mostrarMenu();
                     break;
                 case 3: //continuacion de partida
                     
                     break;
-                case 4: //mostrar ranking e invictos
+                case 4:
                     mostrarRankingEInvictos();
                     mostrarMenu();
                     break;
@@ -164,43 +164,52 @@ public class Menu {
         String[] BC = {" ○","○ "," ○"};
         String[] BD = {"○ "," ○","○ "};
         
-        String[][] valorPiezas = unTablero.matrizPieza(unTablero);
+        Pieza[][] celdas = unTablero.getCeldas();
         String[] letrasTitulo = {"A","B","C"};
         if(mostrarTitulo){
             System.out.println("  1  2  3  4  5  6");
         }
-        for (int i = 0; i < valorPiezas.length; i++) {
-            System.out.println("+--+--+--+--+--+--+");
+        for (int i = 0; i < 3; i++) {
+            System.out.println(" +--+--+--+--+--+--+");
             for(int k = 0; k < 3; k++){
-                String renglon = "|";
+                String renglon = " |";
                 if(mostrarTitulo){
                     if(k == 1){
                         renglon = letrasTitulo[i] + "|";
                     }
                 }
-                for (int j = 0; j < valorPiezas[0].length; j++) {                
-                    if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'C'){
-                        renglon += NC[k];
-                    }else{
-                        if(valorPiezas[i][j].charAt(0) == 'N' && valorPiezas[i][j].charAt(1) == 'D'){
-                            renglon += ND[k];
-                        }else{
-                            if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'C'){
-                                renglon += BC[k];
+                for (int j = 0; j < 6; j++) {    
+                    String dosChars = "  ";
+                    Pieza p = celdas[i][j];
+                    if(p != null){
+                        char col = p.getColor();
+                        char ori = p.getOrientacion();
+                        if(col == 'N'){
+                            if(ori == 'C'){
+                                dosChars = NC[k];
                             }else{
-                                if(valorPiezas[i][j].charAt(0) == 'B' && valorPiezas[i][j].charAt(1) == 'D'){
-                                    renglon += BD[k];
+                                if(ori == 'D'){
+                                    dosChars = ND[k];
+                                }
+                            }
+                        }else{
+                            if(col == 'B'){
+                                if(ori == 'C'){
+                                    dosChars = BC[k];
                                 }else{
-                                    renglon += "  |";
+                                    if(ori == 'D'){
+                                        dosChars = BD[k];
+                                    }
                                 }
                             }
                         }
                     }
+                    renglon += dosChars + "|";
                 }
                 System.out.println(renglon);
             }
         }
-        System.out.println("+--+--+--+--+--+--+");
+        System.out.println(" +--+--+--+--+--+--+");
     }
     
     private static void mostrarJugadoresNumerados(ArrayList<Jugador> lista){
@@ -290,7 +299,7 @@ public class Menu {
                 
                 System.out.println(jugadorTurno.getNombre()+" ingrese la jugada:");
                 String linea = scanner.nextLine();
-                int estado = procesarJugadaLinea(linea, partida, tablero, colorTurno);
+                int estado = procesarJugadaLinea(linea, tablero, colorTurno);
                 
                 if(estado == ESTADO_OK){
                     partida.actualizarEstado();
@@ -383,7 +392,7 @@ public class Menu {
     }
     
     
-    private static int procesarJugadaLinea(String linea, Partida partida, Tablero tablero, char colorTurno){
+    private static int procesarJugadaLinea(String linea, Tablero tablero, char colorTurno){
         int estado = ESTADO_OK;
         String jugada = "";
         if(linea != null){
@@ -411,7 +420,7 @@ public class Menu {
                             }
                         }else{
                             if(jugada.equals("H")){
-                                System.out.println("Ayuda:  ");//no implementada aun---------------------
+                                System.out.println("Ayuda:  ");//no implementada aun
                             }else{
                                 if(jugada.length() == 3){
                                     char letraFila = jugada.charAt(0);
@@ -426,18 +435,18 @@ public class Menu {
                                         estado = ESTADO_REINGRESAR;
                                     }else{
                                         if(esInvertir(accion)){
-                                            boolean pude = intentarInvertir(fila, col, partida, tablero, colorTurno);
+                                            boolean pude = intentarInvertir(fila, col, tablero, colorTurno);
                                             if(!pude){
                                                 System.out.println("No se pude invertir esa pieza");
                                                 estado = ESTADO_REINGRESAR;
                                             }
                                         }else{
                                             if(esOrientacion(accion)){
-                                                boolean pude = intentarColocar(fila, col, Character.toUpperCase(accion), partida, tablero, colorTurno);
+                                                boolean pude = intentarColocar(fila, col, Character.toUpperCase(accion), tablero, colorTurno);
                                                 if(!pude){
                                                     System.out.println("No se puede colocar en esa celda");
                                                     estado = ESTADO_REINGRESAR;
-                                                }
+                                                }                                               
                                             }else{
                                                 System.out.println("Accion invalida");
                                                 estado = ESTADO_REINGRESAR;
@@ -467,7 +476,7 @@ public class Menu {
         return confirmado;
     }
     
-    private static boolean intentarColocar(int fila, int col, char orientacion, Partida partida, Tablero tablero, char colorTurno){
+    private static boolean intentarColocar(int fila, int col, char orientacion, Tablero tablero, char colorTurno){
         boolean pude = false;
         if(tablero.estaLibre(fila, col)){
             Pieza pieza = new Pieza(colorTurno, orientacion);
@@ -478,7 +487,8 @@ public class Menu {
         }
         return pude;
     }
-    private static boolean intentarInvertir(int fila, int col, Partida partida, Tablero tablero, char colorTurno){
+    
+    private static boolean intentarInvertir(int fila, int col, Tablero tablero, char colorTurno){
         boolean pude = false;
         Pieza[][] celdas = tablero.getCeldas();
         if(celdas[fila][col] != null){
