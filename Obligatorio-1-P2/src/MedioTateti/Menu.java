@@ -26,6 +26,7 @@ public class Menu{
     private static final int ESTADO_FIN_RENUNCIA = 1;
     private static final int ESTADO_FIN_EMPATE = 2;
     private static final int ESTADO_REINGRESAR = 3;
+    private static final int ESTADO_AUXILIAR = 4;
     public static void main(String args[]){
         boolean valido=false;
         try {
@@ -421,9 +422,11 @@ public class Menu{
             }else{
                 if(jugada.equals("B")){
                     mostrarTitulo = true;
+                    estado = ESTADO_AUXILIAR;
                 }else{
                     if(jugada.equals("N")){
                         mostrarTitulo = false;
+                        estado = ESTADO_AUXILIAR;
                     }else{
                         if(jugada.equals("T")){
                             boolean confirmado = confirmarEmpate();
@@ -433,7 +436,8 @@ public class Menu{
                             }
                         }else{
                             if(jugada.equals("H")){
-                                System.out.println("Ayuda:  ");//no implementada aun
+                                System.out.println("Jugada ganadora:  ");//no implementada aun
+                                estado = ESTADO_AUXILIAR;
                             }else{
                                 if(jugada.length() == 3){
                                     char letraFila = jugada.charAt(0);
@@ -512,6 +516,5 @@ public class Menu{
             }
         }
         return pude;
-    }
-    
+    } 
 }
