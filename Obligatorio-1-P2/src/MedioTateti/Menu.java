@@ -19,9 +19,8 @@ import java.nio.charset.StandardCharsets;
 //System.out.println("○");
 public class Menu {
     public static Scanner scanner = new Scanner(System.in);
-    public static Sistema sistema = new Sistema();
+    public static Sistema sistema;
     public static boolean mostrarTitulo = true;
-    
     private static final int ESTADO_OK = 0;
     private static final int ESTADO_FIN_RENUNCIA = 1;
     private static final int ESTADO_FIN_EMPATE = 2;
@@ -32,32 +31,86 @@ public class Menu {
         } catch (UnsupportedEncodingException ex) {
             System.getLogger(Menu.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+        sistema = new Sistema();
         
         mostrarMenu();
+        System.out.print("Ingrese su opcion (1-5) ");
         int opcion = scanner.nextInt();
         scanner.nextLine();
         while(opcion != 5){
             switch (opcion){
-                case 1: registrarJugador();
+                case 1: 
+                    registrarJugador();
+                    mostrarMenu();
                     break;
                 case 2: //comienzo de partida comun
-                    
+                    jugarPartidaNormal();
+                    mostrarMenu();
                     break;
                 case 3: //continuacion de partida
                     
                     break;
                 case 4: //mostrar ranking e invictos
-                    
+                    mostrarRankingEInvictos();
+                    mostrarMenu();
                     break;
+                   
                 default: 
                     System.out.println("Opción incorrecta, Reingrese");
             }
             opcion = scanner.nextInt();
             scanner.nextLine();
         }
+       
+    }
+    
+    private static void mostrarRankingEInvictos(){
+        ArrayList<Jugador> lista = sistema.getJugadores();
+
+        if (lista.isEmpty()) {
+            System.out.println("No hay jugadores registrados.");
+            return;
+        }
+        System.out.println("RANKING DE JUGADORES");
+    
+         Collections.sort(lista,new CriterioVictorias());
+    
+        for (int i = 0; i < lista.size(); i++) {
+            Jugador j = lista.get(i);
+            System.out.println((i + 1) + ") " + j.getNombre() + " | " + j.getPartidasGanadas());
+        }
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        
+           
+        System.out.println("JUGADORES INVICTOS ");
+        System.out.println("");
+     
+        ArrayList<Jugador> invictos = new ArrayList<Jugador>();
+
+   
+        for (int i = 0; i < lista.size(); i++) {
+            Jugador j = lista.get(i);
+            if (j.esInvicto()) {
+            invictos.add(j);
+            }
+        }
+        Collections.sort(invictos);
+        
+        if (invictos.isEmpty()) {
+        System.out.println("No hay jugadores invictos.");
+    } else {
+        for (int i = 0; i < invictos.size(); i++) {
+            System.out.println(invictos.get(i).getNombre());
+        }
+    }
+        System.out.println("");
+        System.out.println("");
     }
     
     public static void mostrarMenu(){
+        
         System.out.println("Trabajo desarrollado por: Marcos Coszion (332945) y Fransisco Lino (347691)");
         System.out.println("-------------------------------");
         System.out.println(" MEDIO TATETI - MENU PRINCIPAL");
@@ -68,6 +121,8 @@ public class Menu {
         System.out.println("3. Continuación de partida");
         System.out.println("4. Mostrar ranking e invictos");
         System.out.println("5. Fin");
+         
+        
     }
     
     public static void registrarJugador(){
@@ -184,7 +239,7 @@ public class Menu {
     private static Jugador elegirJugadorPorNumero(ArrayList<Jugador> lista, String etiqueta){
         Jugador elegido = null;
         int maximo = lista.size();
-        System.out.println("Seleccion el "+etiqueta+" :");
+        System.out.println("Seleccione el "+etiqueta+" :");
         int numero = leerNumeroJugador(1, maximo);
         elegido = lista.get(numero -1);
         return elegido;

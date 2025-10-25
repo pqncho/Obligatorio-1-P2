@@ -2,6 +2,8 @@
 package MedioTateti;
 
 public class Jugador implements Comparable<Jugador>{
+    private int partidasGanadas;
+    private int partidasPerdidas;
     private String nombre;
     private int edad;
     
@@ -18,6 +20,27 @@ public class Jugador implements Comparable<Jugador>{
     public void setEdad (int unaEdad){
         edad = unaEdad;
     }
+   
+    public int getPartidasGanadas() {
+    return partidasGanadas; 
+    }
+    public int getPartidasPerdidas() {
+    return partidasPerdidas; 
+    }
+
+    public void sumarVictoria() {
+    partidasGanadas++;
+    
+    }
+
+    public void sumarDerrota() {
+    partidasPerdidas++;
+    
+    }
+
+    public boolean esInvicto() {
+    return partidasPerdidas == 0;
+    }
     
     @Override
     public int compareTo(Jugador otroJugador){
@@ -30,11 +53,17 @@ public class Jugador implements Comparable<Jugador>{
     
     @Override
     public String toString(){
-        return "nombre: "+getNombre()+", edad: "+getEdad();
+        return "nombre: "+getNombre()+", edad: "+getEdad() +", ganadas: " + partidasGanadas + ", perdidas: "+ partidasPerdidas;
     }
     
    public Jugador(String unNombre, int unaEdad){
        nombre = unNombre;
        edad = unaEdad;
+       
+       partidasGanadas=0;
+       partidasPerdidas=0;
    }
+   
+   
+   
 }

@@ -60,8 +60,12 @@ public class Partida {
         }
         if(turnoDeO){
             ganador = jugadorO;
+            jugadorO.sumarVictoria();
+            jugadorX.sumarDerrota();
         }else{
             ganador = jugadorX;
+            jugadorX.sumarVictoria();
+            jugadorO.sumarDerrota();
         }
     }
     
@@ -80,8 +84,12 @@ public class Partida {
         finalizado = true;
         if(turnoDeO){
             ganador = jugadorX;
+            jugadorX.sumarVictoria();
+            jugadorO.sumarDerrota();
         }else{
             ganador =jugadorO;
+            jugadorO.sumarVictoria();
+            jugadorX.sumarDerrota();
         }
     }
     

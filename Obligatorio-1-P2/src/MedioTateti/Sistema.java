@@ -8,7 +8,11 @@ import java.util.*;
  * Maneja la lista de jugadores, el ranking y crea las partidas (instancias de Juego).
  * Es el intermediario entre la interfaz (TatetiMain) y la lógica del juego.
  */
+
 public class Sistema {
+    public Sistema(){
+
+}
     private ArrayList<Jugador> jugadores= new ArrayList<Jugador>();
     
     public ArrayList<Jugador> getJugadores(){
@@ -47,3 +51,4 @@ public class Sistema {
         Collections.sort(jugadores);
     }
 }
+
