@@ -17,7 +17,8 @@ import java.nio.charset.StandardCharsets;
 
 //System.out.println("●");
 //System.out.println("○");
-public class Menu {
+public class Menu{
+    
     public static Scanner scanner = new Scanner(System.in);
     public static Sistema sistema;
     public static boolean mostrarTitulo = true;
@@ -26,6 +27,7 @@ public class Menu {
     private static final int ESTADO_FIN_EMPATE = 2;
     private static final int ESTADO_REINGRESAR = 3;
     public static void main(String args[]){
+        boolean valido=false;
         try {
             System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8.name()));
         } catch (UnsupportedEncodingException ex) {
@@ -35,8 +37,19 @@ public class Menu {
         
         mostrarMenu();
         System.out.print("Ingrese su opcion (1-5) ");
-        int opcion = scanner.nextInt();
-        scanner.nextLine();
+        int opcion = 0;
+        while(!valido){
+            try{
+                opcion=scanner.nextInt();
+                scanner.nextLine();
+                if(opcion<6 && opcion>0){
+                    valido=true;
+                }
+            }catch(InputMismatchException e){
+                System.out.println("Opcion incorrecta, reingrese");
+                scanner.nextLine();
+            }
+        }
         while(opcion != 5){
             switch (opcion){
                 case 1: 
