@@ -20,7 +20,7 @@ public class Tablero {
     public boolean estaLibre(int fila, int columna){
         boolean libre = false;
         if(enRango(fila, columna)){
-            if(celdas[fila][columna]== null){
+            if(celdas[fila][columna] == null){
                 libre = true;
             }
         }
@@ -47,7 +47,7 @@ public class Tablero {
         }
         return pude;
     }
-    
+
     public boolean estaLleno(){
         boolean lleno = true;
         for (int i = 0; i < 3; i++){
@@ -92,10 +92,10 @@ public class Tablero {
         return celdas;
     }
     
-    //esto creo que al final no(seguramente no)
-    public String[][] matrizPieza(Tablero unTablero){
+    
+    //falsito
+    public String[][] matrizPieza(){
         String[][] valores = new String[3][6];
-        Pieza[][] celdas = unTablero.getCeldas();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 6; j++) {
                 if(celdas[i][j] == null){
