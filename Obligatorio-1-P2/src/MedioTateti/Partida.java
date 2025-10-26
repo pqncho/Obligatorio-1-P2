@@ -21,50 +21,34 @@ public class Partida {
         return finalizado;
     }
     
-    //esto cambia despues de definir jugada, la cual no va a existir, pero veremos
-    //creo que esto ni va ya
-    public boolean jugar(int fila, int columna){
-        boolean pudeJugar = false;
-        if(!finalizado){
-            Pieza piezaActual = darPiezaActual();
-            if(tablero.estaLibre(fila, columna)){
-                tablero.colocar(fila, columna, piezaActual);
-                actualizarEstado();
-                if(!finalizado){
-                    turnoDeO = !turnoDeO;
-                }
-                pudeJugar = true;
-            }
-        }
-        return pudeJugar;
-    }
-    
-    // 'C' o 'D' segun el truno (y el color)
-    //esto creo que tampoco va
-    public Pieza darPiezaActual(){
-        //creo que esto al final no
-        //hay que hacerlo despues de definir la clase jugada, la cual no va a existir, pero veremos
-        return new Pieza('N', 'C');
-    }
-    
     public Tablero getTablero(){
         return tablero;
     }
     
-    //esto va a cambiar porque el jugadorO, cuando coloca o invierte una pieza, puede hacer ganar al jugadorX
-    //aca si se detecta que en el tablero alguien ya gano, gana el ultimo que jugo (hay que hacer un metodo que evalue de que formas esta hecha la jugada ganadora)(despues igual)
     public void actualizarEstado(){
-        boolean hayGanador = tablero.hayLinea();
-        if(hayGanador){
+        char estado = tablero.estadoGanador();
+        if(estado != '-'){
             finalizado = true;
-            if(turnoDeO){
-                ganador = jugadorO;
-                jugadorO.sumarVictoria();
-                jugadorX.sumarDerrota();
+            if(estado == 'B'){
+                if(turnoDeO){
+                    ganador = jugadorO;
+                    jugadorO.sumarVictoria();
+                    jugadorX.sumarDerrota();
+                }else{
+                    ganador = jugadorX;
+                    jugadorX.sumarVictoria();
+                    jugadorO.sumarDerrota();
+                }
             }else{
-                ganador = jugadorX;
-                jugadorX.sumarVictoria();
-                jugadorO.sumarDerrota();
+                if(estado == 'O'){
+                    ganador = jugadorO;
+                    jugadorO.sumarVictoria();
+                    jugadorX.sumarDerrota();
+                }else{
+                    ganador = jugadorX;
+                    jugadorX.sumarVictoria();
+                    jugadorO.sumarDerrota();
+                }    
             }
         }
     }

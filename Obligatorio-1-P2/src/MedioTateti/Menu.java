@@ -1,13 +1,5 @@
 /* Trabajo realizado por Marcos Coszion (332945) y Francisco Lino (347691)*/
-/*
-de momento quedo hecha la opcion a, y la opcion b esta casi completa
-de la opcion b queda: 
--Definir la jugada H, la ayuda(la hacemos al final igual)
--Hay que definir el metodo que verifica si hay una jugada ganadora en el tablero, osea si hay un ganador
-    tablero.hayLinea
 
-
-*/
 package MedioTateti;
 
 import java.util.*;
@@ -15,13 +7,11 @@ import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-//System.out.println("●");
-//System.out.println("○");
 public class Menu{
     
     public static Scanner scanner = new Scanner(System.in);
     public static Sistema sistema;
-    public static boolean mostrarTitulo = true;
+    public static boolean mostrarTitulo = false;
     private static final int ESTADO_OK = 0;
     private static final int ESTADO_FIN_RENUNCIA = 1;
     private static final int ESTADO_FIN_EMPATE = 2;
@@ -61,8 +51,9 @@ public class Menu{
                     jugarPartidaNormal();
                     mostrarMenu();
                     break;
-                case 3: //continuacion de partida
-                    
+                case 3: 
+                    jugarContinuacionPartida();
+                    mostrarMenu();   
                     break;
                 case 4:
                     mostrarRankingEInvictos();
@@ -173,6 +164,10 @@ public class Menu{
     }
     
     private static void imprimirTablero(Tablero unTablero, boolean mostrarTitulo){
+        imprimirTableroCobertura(unTablero, mostrarTitulo, null,'-');
+    }
+    
+    private static void imprimirTableroCobertura(Tablero unTablero, boolean mostrarTitulo, boolean[][]cobertura, char letraGanadora){
         String[] NC = {" ●","● "," ●"};
         String[] ND = {"● "," ●","● "};
         String[] BC = {" ○","○ "," ○"};
@@ -180,6 +175,7 @@ public class Menu{
         
         Pieza[][] celdas = unTablero.getCeldas();
         String[] letrasTitulo = {"A","B","C"};
+        
         if(mostrarTitulo){
             System.out.println("  1  2  3  4  5  6");
         }
@@ -195,24 +191,64 @@ public class Menu{
                 for (int j = 0; j < 6; j++) {    
                     String dosChars = "  ";
                     Pieza p = celdas[i][j];
+                    boolean resaltar = false;
+                    
+                    if(cobertura != null){
+                        if(cobertura[i][j]){
+                            resaltar = true;
+                        }
+                    }
+                    
                     if(p != null){
                         char col = p.getColor();
                         char ori = p.getOrientacion();
                         if(col == 'N'){
                             if(ori == 'C'){
-                                dosChars = NC[k];
+                                if(resaltar){
+                                    if(letraGanadora == 'O'){
+                                        dosChars = "OO";
+                                    }else{
+                                        dosChars = "XX";
+                                    }
+                                }else{
+                                    dosChars = NC[k];
+                                }
                             }else{
                                 if(ori == 'D'){
-                                    dosChars = ND[k];
+                                    if(resaltar){
+                                        if(letraGanadora == 'O'){
+                                            dosChars = "OO";
+                                        }else{
+                                            dosChars = "XX";
+                                        }
+                                    }else{
+                                        dosChars = ND[k];
+                                    }
                                 }
                             }
                         }else{
                             if(col == 'B'){
                                 if(ori == 'C'){
-                                    dosChars = BC[k];
+                                    if(resaltar){
+                                        if(letraGanadora == 'O'){
+                                            dosChars = "OO";
+                                        }else{
+                                            dosChars = "XX";
+                                        }   
+                                    }else{
+                                        dosChars = BC[k];
+                                    }
                                 }else{
                                     if(ori == 'D'){
-                                        dosChars = BD[k];
+                                        if(resaltar){
+                                            if(letraGanadora == 'O'){
+                                                dosChars = "OO";
+                                            }else{
+                                                dosChars = "XX";
+                                            }
+                                        }else{
+                                            dosChars = BD[k];
+                                        }
                                     }
                                 }
                             }
@@ -292,7 +328,7 @@ public class Menu{
             
             Partida partida = new Partida(jugadorX, jugadorO);
             Tablero tablero = partida.getTablero();
-            mostrarTitulo = true;
+            mostrarTitulo = false;
             
             System.out.println("Comieza jugando: O = "+jugadorO.getNombre()+" vs X = "+jugadorX.getNombre());
     
@@ -302,16 +338,19 @@ public class Menu{
                 
                 Jugador jugadorTurno;
                 char colorTurno;
+                char letraTurno;
                 
                 if(partida.esTurnoDeO()){
                     jugadorTurno = jugadorO;
                     colorTurno = 'B';
+                    letraTurno = 'O';
                 }else{
                     jugadorTurno = jugadorX;
                     colorTurno = 'N';
+                    letraTurno = 'X';
                 }
                 
-                System.out.println(jugadorTurno.getNombre()+" ingrese la jugada:");
+                System.out.println(jugadorTurno.getNombre() + "(" + letraTurno +")" + " ingrese la jugada:");
                 String linea = scanner.nextLine();
                 int estado = procesarJugadaLinea(linea, tablero, colorTurno);
                 
@@ -324,6 +363,14 @@ public class Menu{
                         if(ganador != null){
                             System.out.println("Ganó: "+ganador.getNombre());
                         }
+                        char letraGanadora;
+                        if(ganador == jugadorO){
+                            letraGanadora = 'O';
+                        }else{
+                            letraGanadora = 'X';
+                        }
+                        boolean[][] cobertura = tablero.coberturaGanadora(letraGanadora);
+                        imprimirTableroCobertura(tablero, mostrarTitulo, cobertura, letraGanadora);
                     }else{
                         partida.cambiarTurno();
                     }
@@ -358,6 +405,172 @@ public class Menu{
         }
     }
     
+    private static void jugarContinuacionPartida(){
+        boolean continuar = true;
+        if(sistema.getJugadores().size()<2){
+            System.out.println("Debe haber al menos 2 jugadores registrados");
+        }else{
+            sistema.ordenarJugadoresPorNombre();
+            ArrayList<Jugador> lista = sistema.getJugadores();
+            mostrarJugadoresNumerados(lista);
+            
+            Jugador jugadorX = null;
+            Jugador jugadorO = null;
+            
+            jugadorX = elegirJugadorPorNumero(lista, "JUGADOR X");
+            boolean distinto = false;
+            while(!distinto){
+                jugadorO = elegirJugadorPorNumero(lista, "JUGADOR O");
+                if(jugadorO == jugadorX){
+                    System.out.println("Debe elegir jugadores diferentes. Reintente JUGADOR O");
+                }else{
+                    distinto = true;
+                }
+            }
+            
+            Partida partida = new Partida(jugadorX, jugadorO);
+            Tablero tablero = partida.getTablero();
+            mostrarTitulo = false;
+            
+            System.out.println("Ingrese la secuencia de jugadas separadas por espacio (ej: A1C B3D C2I)");
+            String secuencia = scanner.nextLine().trim();
+            
+            if(secuencia.length() > 0){
+                Scanner lectorJugadas = new Scanner(secuencia);
+                
+                while(lectorJugadas.hasNext() && continuar){
+                    String jugada = lectorJugadas.next();
+                    
+                    Jugador jugadorTurno;
+                    char colorTurno;
+                    char letraTurno;
+
+                    if(partida.esTurnoDeO()){
+                        jugadorTurno = jugadorO;
+                        colorTurno = 'B';
+                        letraTurno = 'O';
+                    }else{
+                        jugadorTurno = jugadorX;
+                        colorTurno = 'N';
+                        letraTurno = 'X';
+                    }
+
+                    System.out.println(jugadorTurno.getNombre() + "(" + letraTurno +") juega: "+jugada);
+                    
+                    int estado = procesarJugadaLinea(jugada, tablero, colorTurno);
+
+                    if(estado == ESTADO_OK){
+                        imprimirTablero(tablero, mostrarTitulo);
+                        partida.actualizarEstado();
+                        if(partida.estaFinalizado()){
+                            Jugador ganador = partida.getGanador();
+                            System.out.println("Hay ganador!");
+                            if(ganador != null){
+                                System.out.println("Ganó: "+ganador.getNombre());
+                            
+                                char letraGanadora;
+                                if(ganador == jugadorO){
+                                    letraGanadora = 'O';
+                                }else{
+                                    letraGanadora = 'X';
+                                }
+                                
+                                boolean[][] cobertura = tablero.coberturaGanadora(letraGanadora);
+                                imprimirTableroCobertura(tablero, mostrarTitulo, cobertura, letraGanadora);
+                            } 
+                            continuar = false;
+                        }else{
+                            partida.cambiarTurno();
+                        }  
+                    }else{
+                        if(estado == ESTADO_AUXILIAR){
+                            
+                        }else{
+                            System.out.println("Jugada invalida en la secuencia: "+jugada);
+                            continuar = false;
+                        }
+                    }  
+                }
+                lectorJugadas.close();
+            }
+            
+            if(continuar){
+                System.out.println("Continuando la patida normalmente desde el estado actual...");
+                
+                while(!partida.estaFinalizado() && continuar){
+                    imprimirTablero(tablero, mostrarTitulo);
+
+                    Jugador jugadorTurno;
+                    char colorTurno;
+                    char letraTurno;
+
+                    if(partida.esTurnoDeO()){
+                        jugadorTurno = jugadorO;
+                        colorTurno = 'B';
+                        letraTurno = 'O';
+                    }else{
+                        jugadorTurno = jugadorX;
+                        colorTurno = 'N';
+                        letraTurno = 'X';
+                    }
+
+                    System.out.println(jugadorTurno.getNombre() + "(" + letraTurno +")" + " ingrese la jugada:");
+                    String linea = scanner.nextLine();
+                    int estado = procesarJugadaLinea(linea, tablero, colorTurno);
+
+                    if(estado == ESTADO_OK){
+                        partida.actualizarEstado();
+                        if(partida.estaFinalizado()){
+                            imprimirTablero(tablero, mostrarTitulo);
+                            Jugador ganador = partida.getGanador();
+                            System.out.println("Hay ganador!");
+                            if(ganador != null){
+                                System.out.println("Ganó: "+ganador.getNombre());
+                            }
+                            char letraGanadora;
+                            if(ganador == jugadorO){
+                                letraGanadora = 'O';
+                            }else{
+                                letraGanadora = 'X';
+                            }
+                            boolean[][] cobertura = tablero.coberturaGanadora(letraGanadora);
+                            imprimirTableroCobertura(tablero, mostrarTitulo, cobertura, letraGanadora);
+                        }else{
+                            partida.cambiarTurno();
+                        }
+                    }else{
+                        if(estado == ESTADO_FIN_RENUNCIA){
+                            partida.renunciar();
+                            imprimirTablero(tablero, mostrarTitulo);
+                            Jugador ganador = partida.getGanador();
+                            Jugador rendido;
+                            if(partida.esTurnoDeO()){
+                                rendido = jugadorO;
+                            }else{
+                                rendido = jugadorX;
+                            }
+                            System.out.println("Partida finalizada por rendición");
+                            System.out.println("Se rindio "+rendido.getNombre());
+                            System.out.println("Gano "+ganador.getNombre());
+
+                            continuar = false;
+                        }else{
+                            if(estado == ESTADO_FIN_EMPATE){
+                                System.out.println("Partida finalizada por empate.");
+                                continuar = false;
+                            }else{
+                                if(estado == ESTADO_REINGRESAR){
+                                    System.out.println("Jugada invalida. Reintentar");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+            
+            
     private static int indiceFila(char letra){
         int indice = -1;
         char aux = Character.toUpperCase(letra);
@@ -436,7 +649,12 @@ public class Menu{
                             }
                         }else{
                             if(jugada.equals("H")){
-                                System.out.println("Jugada ganadora:  ");//no implementada aun
+                                String sugerida = sugerirJugadaGanadora(tablero, colorTurno);
+                                if(sugerida.length() > 0){
+                                    System.out.println("Jugada ganadora: " + sugerida);
+                                }else{
+                                    System.out.println("No hay jugada ganadora");
+                                }
                                 estado = ESTADO_AUXILIAR;
                             }else{
                                 if(jugada.length() == 3){
@@ -465,7 +683,7 @@ public class Menu{
                                                     estado = ESTADO_REINGRESAR;
                                                 }                                               
                                             }else{
-                                                System.out.println("Accion invalida");
+                                                System.out.println("Accion invalida. Use A3C, B2D, A2I, o comandos X/B/N/T/H");
                                                 estado = ESTADO_REINGRESAR;
                                             }
                                         }
@@ -517,4 +735,81 @@ public class Menu{
         }
         return pude;
     } 
-}
+    
+    private static String sugerirJugadaGanadora(Tablero tablero, char colorTurno){
+        String jugada = "";
+        Pieza[][] celdas = tablero.getCeldas();
+        char letraObjetivo = letraDeColor(colorTurno);
+        
+        for (int fila = 0; fila < 3; fila++) {
+            for (int col = 0; col < 6; col++) {
+                
+                if(celdas[fila][col] == null){
+                    Pieza pC = new Pieza(colorTurno, 'C');
+                    boolean pude = tablero.colocar(fila, col, pC);
+                    if(pude){
+                        char estado = tablero.estadoGanador();
+                        if(estado == letraObjetivo || estado == 'B'){
+                            jugada = indiceDePieza(fila, col) + "C";
+                        }
+                        celdas[fila][col] = null;
+                    }
+                }
+                
+                if(jugada.length() == 0){
+                    if(celdas[fila][col] == null){
+                        Pieza pD = new Pieza(colorTurno, 'D');
+                        boolean pude = tablero.colocar(fila, col, pD);
+                        if(pude){
+                            char estado = tablero.estadoGanador();
+                            if(estado == letraObjetivo || estado == 'B'){
+                                jugada = indiceDePieza(fila, col) + "D"; 
+                            }
+                            celdas[fila][col] = null;
+                        }
+                    }
+                }
+                
+                if(jugada.length() == 0){
+                    if(celdas[fila][col] != null){
+                        Pieza pieza = celdas[fila][col];
+                        if(pieza.getColor() == colorTurno){
+                            pieza.invertir();
+                            char estado = tablero.estadoGanador();
+                            if(estado == letraObjetivo || estado == 'B'){
+                                jugada = indiceDePieza(fila, col) + "I";
+                            }
+                            pieza.invertir();
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        return jugada;
+    }
+    
+    private static char letraDeColor(char colorTurno){
+        char letra = 'O';
+        if(colorTurno == 'N'){
+            letra = 'X';
+        }
+        return letra;
+    }
+    private static String indiceDePieza(int fila, int col){
+        String texto = "";
+        char letraFila = 'A';
+        if(fila == 1){
+            letraFila = 'B';
+        }else{
+            if(fila == 2){
+                letraFila = 'C';
+            }
+        }
+        int numCol = col + 1;
+        texto = Character.toString(letraFila) + Integer.toString(numCol);
+        return texto;
+    }
+     
+} 

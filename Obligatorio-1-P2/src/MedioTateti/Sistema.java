@@ -2,12 +2,6 @@
 package MedioTateti;
 
 import java.util.*;
-    
-/*
- * Clase Sistema
- * Maneja la lista de jugadores, el ranking y crea las partidas (instancias de Juego).
- * Es el intermediario entre la interfaz (TatetiMain) y la lógica del juego.
- */
 
 public class Sistema {
     public Sistema(){
@@ -28,7 +22,7 @@ public class Sistema {
     public boolean existeJugador(String unNombre){
         boolean existe = false;
         for (int i = 0; i < this.getJugadores().size(); i++) {
-            if(this.getJugadores().get(i).getNombre().equals(unNombre)){
+            if(this.getJugadores().get(i).getNombre().equalsIgnoreCase(unNombre)){
                 existe = true;
             }
         }
