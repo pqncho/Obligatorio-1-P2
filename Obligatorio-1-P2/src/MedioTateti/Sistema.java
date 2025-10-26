@@ -52,3 +52,12 @@ public class Sistema {
     }
 }
 
+ class CriterioVictorias implements Comparator<Jugador>{
+    
+
+    @Override
+    public int compare( Jugador j1,Jugador j2){
+    return  j2.getPartidasGanadas() - j1.getPartidasGanadas();
+    }
+}
+
