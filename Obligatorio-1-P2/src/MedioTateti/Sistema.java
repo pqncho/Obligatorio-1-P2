@@ -12,7 +12,7 @@ import java.util.*;
 public class Sistema {
     public Sistema(){
 
-}
+    }
     private ArrayList<Jugador> jugadores= new ArrayList<Jugador>();
     
     public ArrayList<Jugador> getJugadores(){
@@ -52,12 +52,10 @@ public class Sistema {
     }
 }
 
- class CriterioVictorias implements Comparator<Jugador>{
-    
-
+class CriterioVictorias implements Comparator<Jugador>{    
     @Override
     public int compare( Jugador j1,Jugador j2){
-    return  j2.getPartidasGanadas() - j1.getPartidasGanadas();
+        return  j2.getPartidasGanadas() - j1.getPartidasGanadas();
     }
 }
 
