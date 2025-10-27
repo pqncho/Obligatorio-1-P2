@@ -133,6 +133,7 @@ public class Menu{
     public static void registrarJugador(){
         String nombreJugador = "";
         int edadJugador = -1;
+        boolean valido2=false;
         boolean valido = false;
         
         while(!valido){
@@ -148,14 +149,22 @@ public class Menu{
                 }
             }
         }
-        
-        System.out.println("ingrese edad del jugador");
-        edadJugador = scanner.nextInt();
-        scanner.nextLine();
-        while(edadJugador <= 0){
-            System.out.println("edad invalida, Reingrese");
+        while(!valido2){
+        try{
+            
+            System.out.println("ingrese edad del jugador");
             edadJugador = scanner.nextInt();
             scanner.nextLine();
+            if(edadJugador>0){
+                valido2=true;
+            } else{
+                System.out.println("Edad inválida, por favor reingrese.");
+            }
+           }catch(InputMismatchException e){
+               System.out.println("Debe ingresar un numero entero valido.");
+               scanner.nextLine();
+           }
+        
         }
         
         Jugador nuevoJugador = new Jugador(nombreJugador, edadJugador);
