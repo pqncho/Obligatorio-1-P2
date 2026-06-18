@@ -74,8 +74,9 @@ Problem Solving
 👨‍💻 Authors
 Juan Francisco Lino
 
-📌 Disclaimer
+## 📌 Disclaimer
 
-This project was developed for educational purposes as part of an academic assignment.
+This project was originally developed as part of an academic assignment at ORT University Uruguay and is published here for educational and portfolio purposes.
+
 
 🚀 Learning through code, logic, and creativity.
